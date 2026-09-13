@@ -1,0 +1,296 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#c30b12">
+  <title>SpiceJet - Select Flights & Fare Tiers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-red: #c30b12;
+      --brand-red-dark: #a1080e;
+      --brand-red-light: #fef2f2;
+      --brand-red-border: #fecaca;
+      --neutral-bg: #f8f7f4;
+      --neutral-card: #ffffff;
+      --neutral-subtle: #f2efe9;
+      --neutral-border: #e5e2dc;
+      --neutral-border-focus: #c8c4bc;
+      --text-main: #111111;
+      --text-secondary: #4b5563;
+      --text-muted: #888888;
+      --accent-green: #15803d;
+      --accent-green-bg: #dcfce7;
+      --accent-green-border: #bbf7d0;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+      --shadow-md: 0 6px 16px -2px rgba(0, 0, 0, 0.07), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+      --shadow-lg: 0 16px 36px -4px rgba(0, 0, 0, 0.10), 0 6px 16px -2px rgba(0, 0, 0, 0.05);
+      --shadow-red: 0 8px 20px -2px rgba(195, 11, 18, 0.28), 0 3px 8px -1px rgba(195, 11, 18, 0.15);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --radius-pill: 9999px;
+      --font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-family);
+      background-color: var(--neutral-bg);
+      color: var(--text-main);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    :focus-visible { outline: 3px solid var(--brand-red); outline-offset: 2px; }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; font-size: 1rem; }
+    
+    .top-header { background: var(--neutral-card); border-bottom: 1px solid var(--neutral-border); position: sticky; top: 0; z-index: 50; box-shadow: var(--shadow-sm); }
+    .header-inner { max-width: 1280px; margin: 0 auto; padding: 0 1.5rem; height: 72px; display: flex; align-items: center; justify-content: space-between; }
+    .brand-logo-img { height: 38px; width: auto; display: block; }
+    
+    .steps-nav { display: flex; align-items: center; gap: 0.5rem; }
+    .step-pill { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.85rem; border-radius: var(--radius-pill); font-size: 0.8rem; font-weight: 600; color: var(--text-muted); background: var(--neutral-subtle); }
+    .step-pill.current { color: #ffffff; background: linear-gradient(135deg, var(--brand-red), var(--brand-red-dark)); box-shadow: 0 2px 6px rgba(195, 11, 18, 0.25); }
+    
+    .main-wrap { max-width: 1280px; width: 100%; margin: 2rem auto; padding: 0 1.5rem; flex: 1; }
+    
+    .search-summary-bar { background: var(--neutral-card); border: 1px solid var(--neutral-border); border-radius: var(--radius-md); padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; box-shadow: var(--shadow-sm); margin-bottom: 1.5rem; }
+    .route-display { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.01em; display: flex; align-items: center; gap: 0.5rem; }
+    .route-sub { font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.15rem; font-weight: 500; }
+    .btn-modify { height: 40px; padding: 0 1.25rem; border: 1.5px solid var(--neutral-border); border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 700; color: var(--text-main); background: var(--neutral-card); cursor: pointer; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+    .btn-modify:hover { border-color: var(--neutral-border-focus); background: var(--neutral-subtle); }
+    
+    .fare-strip { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; margin-bottom: 2rem; }
+    @media (min-width: 640px) { .fare-strip { grid-template-columns: repeat(4, 1fr); } }
+    @media (min-width: 1024px) { .fare-strip { grid-template-columns: repeat(7, 1fr); } }
+    .fare-strip-day { background: var(--neutral-card); border: 1.5px solid var(--neutral-border); border-radius: var(--radius-sm); padding: 0.75rem 0.5rem; text-align: center; cursor: pointer; transition: all 0.2s ease; }
+    .fare-strip-day:hover { border-color: var(--neutral-border-focus); transform: translateY(-2px); }
+    .fare-strip-day.active { border-color: var(--brand-red); background: var(--brand-red-light); box-shadow: 0 2px 8px rgba(195, 11, 18, 0.15); }
+    .day-text { font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); display: block; }
+    .day-fare { font-family: var(--font-mono); font-size: 0.95rem; font-weight: 800; color: var(--text-main); margin-top: 0.2rem; }
+    .fare-strip-day.active .day-fare { color: var(--brand-red); }
+    
+    .flight-card { background: var(--neutral-card); border: 1.5px solid var(--neutral-border); border-radius: var(--radius-lg); padding: 1.75rem; box-shadow: var(--shadow-sm); margin-bottom: 2rem; }
+    
+    .flight-telemetry-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--neutral-border); margin-bottom: 1.75rem; }
+    .flight-identity { display: flex; align-items: center; gap: 1rem; }
+    .airline-badge { width: 44px; height: 44px; border-radius: var(--radius-sm); background: var(--brand-red-light); border: 1px solid var(--brand-red-border); display: flex; align-items: center; justify-content: center; color: var(--brand-red); }
+    .flight-code { font-family: var(--font-mono); font-size: 1.1rem; font-weight: 800; color: var(--text-main); }
+    .aircraft-model { font-size: 0.8rem; color: var(--text-secondary); font-weight: 500; }
+    
+    .timeline-block { display: flex; align-items: center; gap: 1.5rem; }
+    .time-point { text-align: center; }
+    .time-val { font-family: var(--font-mono); font-size: 1.4rem; font-weight: 800; color: var(--text-main); }
+    .airport-val { font-size: 0.85rem; font-weight: 700; color: var(--text-secondary); }
+    .flight-duration { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; }
+    .duration-val { font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; color: var(--text-muted); }
+    
+    .fare-tiers-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
+    @media (min-width: 900px) { .fare-tiers-grid { grid-template-columns: repeat(3, 1fr); } }
+    
+    .tier-card { border: 1.5px solid var(--neutral-border); border-radius: var(--radius-md); padding: 1.5rem; background: var(--neutral-card); display: flex; flex-direction: column; justify-content: space-between; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
+    .tier-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--neutral-border-focus); }
+    
+    .tier-card.featured { border-color: var(--brand-red); box-shadow: var(--shadow-red); position: relative; background: #ffffff; }
+    .tier-featured-pill { position: absolute; top: -12px; right: 16px; background: linear-gradient(135deg, var(--brand-red) 0%, var(--brand-red-dark) 100%); color: #ffffff; font-size: 0.72rem; font-weight: 800; padding: 0.2rem 0.65rem; border-radius: var(--radius-pill); text-transform: uppercase; letter-spacing: 0.05em; }
+    
+    .tier-title { font-size: 1.15rem; font-weight: 800; }
+    .tier-price { font-family: var(--font-mono); font-size: 1.6rem; font-weight: 800; color: var(--brand-red); margin: 0.5rem 0 1rem; }
+    
+    .perks-list { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; }
+    .perk-item { display: flex; align-items: center; gap: 0.5rem; }
+    .perk-badge { width: 20px; height: 20px; border-radius: 50%; background: var(--accent-green-bg); color: var(--accent-green); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    
+    .btn-select-tier { height: 44px; border-radius: var(--radius-sm); font-weight: 700; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; border: 1.5px solid var(--neutral-border); background: var(--neutral-card); color: var(--text-main); transition: all 0.2s ease; text-decoration: none; }
+    .btn-select-tier:hover { border-color: var(--text-main); background: var(--neutral-subtle); }
+    
+    .btn-select-tier.primary { background: linear-gradient(135deg, var(--brand-red) 0%, var(--brand-red-dark) 100%); color: #ffffff; border: none; box-shadow: var(--shadow-red); }
+    .btn-select-tier.primary:hover { transform: translateY(-1px); box-shadow: 0 10px 20px -2px rgba(195, 11, 18, 0.35); }
+    
+    .footer-section { background: var(--neutral-card); border-top: 1px solid var(--neutral-border); padding: 2.5rem 1.5rem; margin-top: auto; }
+  </style>
+</head>
+<body>
+
+  <header class="top-header">
+    <div class="header-inner">
+      <a href="flight-search.html">
+        <img src="https://www.spicejet.com/v1.svg" alt="SpiceJet Logo" class="brand-logo-img">
+      </a>
+
+      <div class="steps-nav">
+        <span class="step-pill current">1. Flights</span>
+        <span class="step-pill">2. Seats & Add-ons</span>
+        <span class="step-pill">3. Passengers</span>
+        <span class="step-pill">4. Payment</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-wrap">
+    <div class="search-summary-bar">
+      <div>
+        <div class="route-display">
+          <span>DEL (Delhi)</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          <span>BOM (Mumbai)</span>
+        </div>
+        <div class="route-sub">Wed, 18 Oct 2026 · 1 Adult · Economy</div>
+      </div>
+      <a href="flight-search.html" class="btn-modify">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        <span>Modify Search</span>
+      </a>
+    </div>
+
+    <div class="fare-strip">
+      <div class="fare-strip-day">
+        <span class="day-text">Mon, 16 Oct</span>
+        <span class="day-fare">₹4,899</span>
+      </div>
+      <div class="fare-strip-day">
+        <span class="day-text">Tue, 17 Oct</span>
+        <span class="day-fare">₹4,499</span>
+      </div>
+      <div class="fare-strip-day active">
+        <span class="day-text">Wed, 18 Oct</span>
+        <span class="day-fare">₹4,299</span>
+      </div>
+      <div class="fare-strip-day">
+        <span class="day-text">Thu, 19 Oct</span>
+        <span class="day-fare">₹4,699</span>
+      </div>
+      <div class="fare-strip-day">
+        <span class="day-text">Fri, 20 Oct</span>
+        <span class="day-fare">₹5,199</span>
+      </div>
+      <div class="fare-strip-day">
+        <span class="day-text">Sat, 21 Oct</span>
+        <span class="day-fare">₹5,499</span>
+      </div>
+      <div class="fare-strip-day">
+        <span class="day-text">Sun, 22 Oct</span>
+        <span class="day-fare">₹5,899</span>
+      </div>
+    </div>
+
+    <div class="flight-card">
+      <div class="flight-telemetry-row">
+        <div class="flight-identity">
+          <div class="airline-badge">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.3c.4-.2.6-.6.5-1.1z"/></svg>
+          </div>
+          <div>
+            <div class="flight-code">SG-8169</div>
+            <div class="aircraft-model">Boeing 737-800 · Direct</div>
+          </div>
+        </div>
+
+        <div class="timeline-block">
+          <div class="time-point">
+            <div class="time-val">06:15</div>
+            <div class="airport-val">DEL (T3)</div>
+          </div>
+
+          <div class="flight-duration">
+            <span class="duration-val">2h 10m</span>
+            <svg width="80" height="12" viewBox="0 0 80 12" fill="none">
+              <line x1="5" y1="6" x2="75" y2="6" stroke="#c8c4bc" stroke-width="2" stroke-dasharray="3 3"/>
+              <polygon points="75,6 68,3 68,9" fill="#c8c4bc"/>
+            </svg>
+            <span style="font-size:0.7rem; font-weight:700; color:var(--accent-green);">Non-stop</span>
+          </div>
+
+          <div class="time-point">
+            <div class="time-val">08:25</div>
+            <div class="airport-val">BOM (T2)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fare-tiers-grid">
+        <div class="tier-card">
+          <div>
+            <div class="tier-title">SpiceSaver</div>
+            <div class="tier-price">₹4,299</div>
+            <ul class="perks-list">
+              <li class="perk-item">
+                <span class="perk-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span>15 kg Check-in Baggage</span>
+              </li>
+              <li class="perk-item">
+                <span class="perk-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span>7 kg Hand Cabin Bag</span>
+              </li>
+              <li class="perk-item" style="color:var(--text-muted);">
+                <span style="width:20px; height:20px; border-radius:50%; background:var(--neutral-subtle); display:inline-flex; align-items:center; justify-content:center; flex-shrink:0;">✕</span>
+                <span>Standard Change Fee Applies</span>
+              </li>
+            </ul>
+          </div>
+          <a href="seat-and-addons.html" class="btn-select-tier">Select Saver</a>
+        </div>
+
+        <div class="tier-card featured">
+          <div class="tier-featured-pill">MOST POPULAR</div>
+          <div>
+            <div class="tier-title">SpiceFlex</div>
+            <div class="tier-price">₹4,999</div>
+            <ul class="perks-list">
+              <li class="perk-item">
+                <span class="perk-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span>15 kg Check-in + 7 kg Cabin</span>
+              </li>
+              <li class="perk-item">
+                <span class="perk-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span><strong>Free Unlimited Date Change</strong></span>
+              </li>
+              <li class="perk-item">
+                <span class="perk-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span>Free Standard Seat Selection</span>
+              </li>
+            </ul>
+          </div>
+          <a href="seat-and-addons.html" class="btn-select-tier primary">Select SpiceFlex</a>
+        </div>
+
+        <div class="tier-card">
+          <div>
+            <div class="tier-title">SpiceMax</div>
+            <div class="tier-price">₹6,499</div>
+            <ul class="perks-list">
+              <li class="perk-item">
+                <span class="perk-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span>Extra Legroom Seat Included</span>
+              </li>
+              <li class="perk-item">
+                <span class="perk-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span>Complimentary Hot Meal + Drink</span>
+              </li>
+              <li class="perk-item">
+                <span class="perk-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span>Priority Check-in & Baggage</span>
+              </li>
+            </ul>
+          </div>
+          <a href="seat-and-addons.html" class="btn-select-tier">Select SpiceMax</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer-section">
+    <div style="max-width: 1280px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; font-size: 0.85rem; color: var(--text-muted);">
+      <div>© 2026 SpiceJet Limited. All fares include mandatory taxes and passenger service fee.</div>
+      <div>Official Live Booking Engine</div>
+    </div>
+  </footer>
+
+</body>
+</html>

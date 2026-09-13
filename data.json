@@ -1,0 +1,92 @@
+﻿{
+  "brand": {
+    "name": "SpiceJet",
+    "primaryColor": "#c30b12",
+    "primaryDark": "#a1080e",
+    "primaryLight": "#fef2f2",
+    "primaryBorder": "#fecaca",
+    "neutralBg": "#f8f7f4",
+    "neutralCard": "#ffffff",
+    "neutralSubtle": "#f2efe9",
+    "neutralBorder": "#e5e2dc",
+    "textMain": "#111111",
+    "textSecondary": "#4b5563",
+    "textMuted": "#888888",
+    "accentGreen": "#15803d",
+    "accentGreenBg": "#dcfce7",
+    "fontFamily": "Poppins, -apple-system, BlinkMacSystemFont, sans-serif",
+    "fontMono": "JetBrains Mono, monospace",
+    "logoUrl": "https://www.spicejet.com/v1.svg"
+  },
+  "airports": [
+    { "code": "DEL", "city": "Delhi", "name": "Indira Gandhi International", "terminal": "T3" },
+    { "code": "BOM", "city": "Mumbai", "name": "Chhatrapati Shivaji Maharaj", "terminal": "T2" },
+    { "code": "BLR", "city": "Bengaluru", "name": "Kempegowda International", "terminal": "T1" },
+    { "code": "MAA", "city": "Chennai", "name": "Chennai International", "terminal": "T1" },
+    { "code": "HYD", "city": "Hyderabad", "name": "Rajiv Gandhi International", "terminal": "T1" },
+    { "code": "CCU", "city": "Kolkata", "name": "Netaji Subhash Chandra Bose", "terminal": "T1" },
+    { "code": "GOI", "city": "Goa (Dabolim)", "name": "Dabolim Airport", "terminal": "T1" },
+    { "code": "DXB", "city": "Dubai", "name": "Dubai International", "terminal": "T1" }
+  ],
+  "flights": [
+    {
+      "flightNumber": "SG-8169",
+      "aircraft": "Boeing 737-800",
+      "origin": "DEL",
+      "destination": "BOM",
+      "departTime": "06:15",
+      "arriveTime": "08:25",
+      "duration": "2h 10m",
+      "stops": "Non-stop",
+      "fares": {
+        "saver": { "name": "SpiceSaver", "price": 4299, "baggage": "15 kg Check-in", "changeFee": "Standard Fee", "seat": "Chargeable" },
+        "flex": { "name": "SpiceFlex", "price": 4999, "baggage": "15 kg + Free Change", "changeFee": "Free Date Change", "seat": "Standard Seat Free", "featured": true },
+        "max": { "name": "SpiceMax", "price": 6499, "baggage": "15 kg + Priority", "changeFee": "Free Date Change", "seat": "Extra Legroom Seat", "meal": "Complimentary Hot Meal", "priority": "Priority Check-in & Boarding" }
+      }
+    },
+    {
+      "flightNumber": "SG-8712",
+      "aircraft": "Boeing 737 MAX 8",
+      "origin": "DEL",
+      "destination": "BOM",
+      "departTime": "11:40",
+      "arriveTime": "13:55",
+      "duration": "2h 15m",
+      "stops": "Non-stop",
+      "fares": {
+        "saver": { "name": "SpiceSaver", "price": 4799, "baggage": "15 kg Check-in", "changeFee": "Standard Fee", "seat": "Chargeable" },
+        "flex": { "name": "SpiceFlex", "price": 5499, "baggage": "15 kg + Free Change", "changeFee": "Free Date Change", "seat": "Standard Seat Free", "featured": true },
+        "max": { "name": "SpiceMax", "price": 6999, "baggage": "15 kg + Priority", "changeFee": "Free Date Change", "seat": "Extra Legroom Seat", "meal": "Complimentary Hot Meal", "priority": "Priority Check-in & Boarding" }
+      }
+    },
+    {
+      "flightNumber": "SG-8472",
+      "aircraft": "Boeing 737-800",
+      "origin": "DEL",
+      "destination": "BOM",
+      "departTime": "18:20",
+      "arriveTime": "20:35",
+      "duration": "2h 15m",
+      "stops": "Non-stop",
+      "fares": {
+        "saver": { "name": "SpiceSaver", "price": 5199, "baggage": "15 kg Check-in", "changeFee": "Standard Fee", "seat": "Chargeable" },
+        "flex": { "name": "SpiceFlex", "price": 5899, "baggage": "15 kg + Free Change", "changeFee": "Free Date Change", "seat": "Standard Seat Free", "featured": true },
+        "max": { "name": "SpiceMax", "price": 7399, "baggage": "15 kg + Priority", "changeFee": "Free Date Change", "seat": "Extra Legroom Seat", "meal": "Complimentary Hot Meal", "priority": "Priority Check-in & Boarding" }
+      }
+    }
+  ],
+  "addons": [
+    { "id": "meal_paneer", "name": "Paneer Tikka Masala with Jeera Rice", "category": "SpiceCafé Hot Meal", "price": 350 },
+    { "id": "meal_chicken", "name": "Butter Chicken with Steamed Rice", "category": "SpiceCafé Hot Meal", "price": 380 },
+    { "id": "meal_sandwich", "name": "Smoked Cheese & Tomato Sandwich", "category": "SpiceCafé Light Bites", "price": 250 },
+    { "id": "baggage_5kg", "name": "Additional 5 Kg Check-in Baggage", "category": "Excess Baggage", "price": 950 },
+    { "id": "baggage_10kg", "name": "Additional 10 Kg Check-in Baggage", "category": "Excess Baggage", "price": 1900 },
+    { "id": "insurance", "name": "Comprehensive Travel Insurance", "category": "SpiceAssurance", "price": 199 }
+  ],
+  "quickServices": [
+    { "title": "Change Assist", "desc": "Modify flights or claim refund", "icon": "https://sg-images.spicejet.com/website/MainComponent/common/ImportantLinks/chng.png", "link": "https://changes.spicejet.com/" },
+    { "title": "SpiceClub Portal", "desc": "Earn & redeem loyalty SCash", "icon": "https://sg-images.spicejet.com/website/MainComponent/common/ImportantLinks/clubIco.png", "link": "https://spiceclub.spicejet.com/" },
+    { "title": "Axis Bank Card", "desc": "Co-branded airport lounge perks", "icon": "https://sg-images.spicejet.com/website/MainComponent/common/ImportantLinks/creditcard.png", "link": "https://spiceclub.spicejet.com/axisBank" },
+    { "title": "GST Invoice", "desc": "Download verified business tax invoices", "icon": "https://sg-images.spicejet.com/website/MainComponent/common/ImportantLinks/gst.png", "link": "#" }
+  ]
+}
