@@ -16,9 +16,11 @@ import {
   MoreHorizontal
 } from 'lucide-react';
 import { BRAND_ASSETS } from '../data/spicejetRealData';
+import LoginModal from './LoginModal';
 
 export default function Header({ 
   currentScreen, 
+  activeBookingTab = 'flights',
   onNavigate, 
   currency = 'INR', 
   onCurrencyChange,
@@ -29,18 +31,19 @@ export default function Header({
   const [currencyDropdownOpen, setCurrencyDropdownOpen] = useState(false);
   const [spiceClubOpen, setSpiceClubOpen] = useState(false);
   const [moreMenuOpen, setMoreMenuOpen] = useState(false);
+  const [loginModalOpen, setLoginModalOpen] = useState(false);
 
   // Core nav items visible on desktop (>=1024px)
   const primaryNavItems = [
-    { id: 'home', label: 'Flights', icon: Plane, screen: 'home' },
-    { id: 'checkin', label: 'Check-In', icon: CheckCircle2, screen: 'home' },
-    { id: 'status', label: 'Flight Status', icon: Clock, screen: 'home' },
-    { id: 'manage', label: 'Manage Booking', icon: FileText, screen: 'home' },
+    { id: 'flights', label: 'Flights', icon: Plane, screen: 'home', tab: 'flights' },
+    { id: 'checkin', label: 'Check-In', icon: CheckCircle2, screen: 'home', tab: 'checkin' },
+    { id: 'status', label: 'Flight Status', icon: Clock, screen: 'home', tab: 'status' },
+    { id: 'manage', label: 'Manage Booking', icon: FileText, screen: 'home', tab: 'manage' },
   ];
 
   // Secondary nav items (collapsed into 'More' on 1024px - 1279px)
   const secondaryNavItems = [
-    { id: 'deals', label: 'Deals', icon: Tag, screen: 'home' },
+    { id: 'deals', label: 'Deals', icon: Tag, screen: 'home', tab: null, isDeals: true },
   ];
 
   return (
@@ -84,13 +87,12 @@ export default function Header({
           <nav className="hidden lg:flex items-center gap-1 xl:gap-1.5 shrink-0" aria-label="Main Navigation">
             {primaryNavItems.map((item) => {
               const Icon = item.icon;
-              const isActive = (currentScreen === 'home' && item.id === 'home') || 
-                               (['search', 'seats', 'passengers', 'payment', 'confirmation'].includes(currentScreen) && item.id === 'home');
+              const isActive = currentScreen === 'home' && activeBookingTab === item.tab;
               return (
                 <button
                   key={item.id}
                   id={`header-nav-${item.id}`}
-                  onClick={() => onNavigate(item.screen)}
+                  onClick={() => onNavigate(item.screen, item.tab)}
                   className={`h-10 px-2.5 xl:px-3.5 rounded-xl flex items-center gap-1.5 xl:gap-2 text-xs xl:text-[13.5px] font-medium transition-all duration-150 shrink-0 whitespace-nowrap ${
                     isActive
                       ? 'bg-[#C30B12]/[0.08] dark:bg-[#FF3B46]/[0.16] text-[#C30B12] dark:text-[#FF3B46] font-semibold'
@@ -111,7 +113,12 @@ export default function Header({
                   <button
                     key={item.id}
                     id={`header-nav-${item.id}`}
-                    onClick={() => onNavigate(item.screen)}
+                    onClick={() => {
+                      onNavigate('home');
+                      setTimeout(() => {
+                        document.getElementById('featured-offers')?.scrollIntoView({ behavior: 'smooth' });
+                      }, 100);
+                    }}
                     className="h-10 px-3 rounded-xl flex items-center gap-1.5 text-[13.5px] font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-white/10 transition-colors shrink-0 whitespace-nowrap"
                   >
                     <Icon className="w-4 h-4 text-slate-500 dark:text-slate-400 shrink-0" strokeWidth={1.8} />
@@ -162,7 +169,7 @@ export default function Header({
               <button
                 id="header-nav-more"
                 onClick={() => setMoreMenuOpen(!moreMenuOpen)}
-                className="h-10 px-2.5 rounded-xl border border-slate-200 dark:border-white/10 hover:border-slate-300 bg-slate-50 dark:bg-white/5 text-slate-700 dark:text-slate-300 text-xs font-medium flex items-center gap-1 transition-all shrink-0 whitespace-nowrap"
+                className="h-10 px-2.5 rounded-xl border border-slate-200 dark:border-white/10 hover:border-slate-300 bg-slate-50 dark:bg-white/5 text-slate-700 dark:text-slate-200 text-xs font-medium flex items-center gap-1 transition-all shrink-0 whitespace-nowrap"
                 title="More options"
               >
                 <MoreHorizontal className="w-4 h-4" />
@@ -175,14 +182,25 @@ export default function Header({
                   onMouseLeave={() => setMoreMenuOpen(false)}
                 >
                   <button 
-                    onClick={() => { onNavigate('home'); setMoreMenuOpen(false); }}
+                    onClick={() => {
+                      onNavigate('home');
+                      setMoreMenuOpen(false);
+                      setTimeout(() => {
+                        document.getElementById('featured-offers')?.scrollIntoView({ behavior: 'smooth' });
+                      }, 100);
+                    }}
                     className="w-full text-left px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5 flex items-center gap-2"
                   >
                     <Tag className="w-3.5 h-3.5 text-slate-500" />
                     <span>Deals & Offers</span>
                   </button>
                   <button 
-                    onClick={() => { alert('SpiceJet 24x7 Customer Support: +91 124 4983410 / custrelations@spicejet.com'); setMoreMenuOpen(false); }}
+                    onClick={() => {
+                      setMoreMenuOpen(false);
+                      const fabBtn = document.querySelector('#help-support-fab-btn');
+                      if (fabBtn) fabBtn.click();
+                      else alert('SpiceJet 24x7 Customer Support: +91 124 4983410 / custrelations@spicejet.com');
+                    }}
                     className="w-full text-left px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5 flex items-center gap-2"
                   >
                     <HelpCircle className="w-3.5 h-3.5 text-slate-500" />
@@ -220,27 +238,23 @@ export default function Header({
                 aria-label="Select Currency"
               >
                 <span className="font-semibold text-slate-900 dark:text-white">{currency}</span>
-                <span className="text-slate-300 dark:text-slate-600">|</span>
-                <span className="text-slate-500 dark:text-slate-400">₹</span>
-                <ChevronDown className="w-3.5 h-3.5 text-slate-400" strokeWidth={2} />
+                <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
               </button>
 
               {currencyDropdownOpen && (
                 <div 
-                  className="absolute right-0 mt-1.5 w-32 bg-white dark:bg-[#1C1D24] border border-slate-200 dark:border-white/10 rounded-xl shadow-elevated py-1 z-50 animate-in fade-in"
+                  className="absolute right-0 mt-1.5 w-28 bg-white dark:bg-[#1C1D24] border border-slate-200 dark:border-white/10 rounded-xl shadow-elevated py-1 z-50 animate-in fade-in"
                   onMouseLeave={() => setCurrencyDropdownOpen(false)}
                 >
-                  {['INR', 'USD', 'AED', 'EUR', 'GBP'].map((curr) => (
+                  {['INR', 'USD', 'EUR', 'AED', 'GBP'].map((curr) => (
                     <button
                       key={curr}
                       onClick={() => {
-                        onCurrencyChange?.(curr);
+                        onCurrencyChange(curr);
                         setCurrencyDropdownOpen(false);
                       }}
-                      className={`w-full text-left px-3 py-1.5 text-xs flex items-center justify-between ${
-                        currency === curr 
-                          ? 'bg-red-50 dark:bg-red-500/20 text-[#C30B12] dark:text-[#FF3B46] font-semibold' 
-                          : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5'
+                      className={`w-full text-left px-3 py-1.5 text-xs flex items-center justify-between hover:bg-slate-50 dark:hover:bg-white/5 ${
+                        currency === curr ? 'font-bold text-[#C30B12] dark:text-[#FF3B46] bg-red-50/50 dark:bg-white/5' : 'text-slate-700 dark:text-slate-300'
                       }`}
                     >
                       <span>{curr}</span>
@@ -254,7 +268,11 @@ export default function Header({
             {/* Support / Help Button (Visible on wide screens 2xl: >= 1400px, otherwise accessible via 'More' and FAB) */}
             <button
               id="header-support-btn"
-              onClick={() => alert('SpiceJet 24x7 Customer Support: +91 124 4983410 / custrelations@spicejet.com')}
+              onClick={() => {
+                const fabBtn = document.querySelector('#help-support-fab-btn');
+                if (fabBtn) fabBtn.click();
+                else alert('SpiceJet 24x7 Customer Support: +91 124 4983410 / custrelations@spicejet.com');
+              }}
               className="hidden 2xl:flex h-10 px-3 rounded-xl border border-slate-200 dark:border-white/10 hover:border-slate-300 dark:hover:border-white/20 bg-white dark:bg-white/5 text-slate-700 dark:text-slate-200 text-xs font-medium items-center gap-1.5 transition-all shadow-resting hover:bg-slate-50 dark:hover:bg-white/10 shrink-0 whitespace-nowrap"
               title="Customer Support"
             >
@@ -265,7 +283,7 @@ export default function Header({
             {/* Primary CTA: Login / Signup (Strictly preserved, never clipped or collapsed) */}
             <button
               id="header-login-btn"
-              onClick={() => alert('SpiceClub Member Login modal')}
+              onClick={() => setLoginModalOpen(true)}
               className="h-10 px-3 sm:px-4 rounded-xl bg-[#C30B12] hover:bg-[#A8080E] active:bg-[#8F060B] dark:bg-[#FF3B46] dark:hover:bg-[#FF5A63] text-white text-xs font-bold flex items-center gap-1.5 sm:gap-2 transition-all shadow-sm hover:shadow-brand-glow shrink-0 whitespace-nowrap"
             >
               <User className="w-4 h-4" strokeWidth={2} />
@@ -289,16 +307,28 @@ export default function Header({
           <div className="lg:hidden py-3 border-t border-slate-100 dark:border-white/10 space-y-1 animate-in fade-in">
             {primaryNavItems.concat(secondaryNavItems).map((item) => {
               const Icon = item.icon;
+              const isActive = currentScreen === 'home' && activeBookingTab === item.tab;
               return (
                 <button
                   key={item.id}
                   onClick={() => {
-                    onNavigate(item.screen);
+                    if (item.isDeals) {
+                      onNavigate('home');
+                      setTimeout(() => {
+                        document.getElementById('featured-offers')?.scrollIntoView({ behavior: 'smooth' });
+                      }, 100);
+                    } else {
+                      onNavigate(item.screen, item.tab);
+                    }
                     setMobileMenuOpen(false);
                   }}
-                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-red-50 dark:hover:bg-white/5 hover:text-[#C30B12] dark:hover:text-[#FF3B46]"
+                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors ${
+                    isActive 
+                      ? 'bg-red-50 dark:bg-[#FF3B46]/20 text-[#C30B12] dark:text-[#FF3B46] font-semibold'
+                      : 'text-slate-700 dark:text-slate-200 hover:bg-red-50 dark:hover:bg-white/5 hover:text-[#C30B12] dark:hover:text-[#FF3B46]'
+                  }`}
                 >
-                  <Icon className="w-4 h-4 text-[#C30B12] dark:text-[#FF3B46]" strokeWidth={1.8} />
+                  <Icon className={`w-4 h-4 ${isActive ? 'text-[#C30B12] dark:text-[#FF3B46]' : 'text-[#C30B12] dark:text-[#FF3B46]'}`} strokeWidth={1.8} />
                   <span>{item.label}</span>
                 </button>
               );
@@ -311,6 +341,12 @@ export default function Header({
           </div>
         )}
       </div>
+
+      {/* Real Interactive Login / Sign Up Modal */}
+      <LoginModal 
+        isOpen={loginModalOpen} 
+        onClose={() => setLoginModalOpen(false)} 
+      />
     </header>
   );
 }

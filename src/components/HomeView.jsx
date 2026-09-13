@@ -11,7 +11,14 @@ import {
 import BookingWidget from './BookingWidget';
 import { BRAND_ASSETS } from '../data/spicejetRealData';
 
-export default function HomeView({ searchParams, setSearchParams, onSearch }) {
+export default function HomeView({ 
+  searchParams, 
+  setSearchParams, 
+  activeTab = 'flights', 
+  setActiveTab, 
+  onSearch,
+  onNavigate 
+}) {
   const quickServices = [
     { title: 'SpiceMax', desc: 'Extra legroom & meal', icon: Crown, color: 'text-amber-600 bg-amber-50 dark:bg-amber-950/40 dark:text-amber-300' },
     { title: 'SpiceCafé', desc: 'Pre-book hot meals', icon: Coffee, color: 'text-red-600 bg-red-50 dark:bg-red-950/40 dark:text-red-300' },
@@ -45,7 +52,10 @@ export default function HomeView({ searchParams, setSearchParams, onSearch }) {
             <BookingWidget 
               searchParams={searchParams} 
               setSearchParams={setSearchParams} 
-              onSearch={onSearch} 
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+              onSearch={onSearch}
+              onNavigate={onNavigate}
             />
           </div>
 
@@ -74,7 +84,7 @@ export default function HomeView({ searchParams, setSearchParams, onSearch }) {
       </section>
 
       {/* Real Live Promotional Deals & Banners */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
+      <section id="featured-offers" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4 scroll-mt-24">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight">Featured Offers & Experiences</h2>
