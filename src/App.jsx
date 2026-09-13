@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import StepNavigation from './components/StepNavigation';
@@ -8,12 +8,28 @@ import PassengerForm from './components/PassengerForm';
 import SeatSelection from './components/SeatSelection';
 import PaymentScreen from './components/PaymentScreen';
 import ConfirmationScreen from './components/ConfirmationScreen';
-import { REAL_FLIGHTS } from './data/spicejetRealData';
+import HelpSupportWidget from './components/HelpSupportWidget';
+import { getFlightsForRoute } from './data/spicejetRealData';
 import { Layers } from 'lucide-react';
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState('home');
   const [currency, setCurrency] = useState('INR');
+  const [theme, setTheme] = useState('light'); // 'light' | 'dark'
+
+  // Sync theme to document element
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  };
 
   // Search parameters
   const [searchParams, setSearchParams] = useState({
@@ -47,7 +63,9 @@ export default function App() {
   const [selectedMeal, setSelectedMeal] = useState(null);
   const [excessBaggage, setExcessBaggage] = useState(null);
 
-  const selectedFlight = REAL_FLIGHTS.find(f => f.id === selectedFlightId) || REAL_FLIGHTS[0];
+  // Dynamically load real flights for current route
+  const currentRouteFlights = getFlightsForRoute(searchParams.origin, searchParams.destination);
+  const selectedFlight = currentRouteFlights.find(f => f.id === selectedFlightId) || currentRouteFlights[0];
 
   const handleSelectFlightFare = (flightId, fareType) => {
     setSelectedFlightId(flightId);
@@ -65,14 +83,16 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F8FAFC]">
+    <div className="min-h-screen flex flex-col bg-[#F8FAFC] dark:bg-[#14151A] text-slate-900 dark:text-slate-100 transition-colors duration-200">
       
-      {/* Global SaaS Header */}
+      {/* Global SaaS Header with Theme Toggle */}
       <Header 
         currentScreen={currentScreen} 
         onNavigate={(screen) => setCurrentScreen(screen)}
         currency={currency}
         onCurrencyChange={(c) => setCurrency(c)}
+        theme={theme}
+        onToggleTheme={toggleTheme}
       />
 
       {/* Step Navigation Progress Bar (Visible on active booking funnel) */}
@@ -109,6 +129,7 @@ export default function App() {
             flightData={selectedFlight}
             passengerDetails={passengerDetails}
             setPassengerDetails={setPassengerDetails}
+            selectedFareType={selectedFareType}
             onBack={() => setCurrentScreen('search')}
             onProceed={() => setCurrentScreen('seats')}
           />
@@ -131,6 +152,7 @@ export default function App() {
           <PaymentScreen
             flightData={selectedFlight}
             passengerDetails={passengerDetails}
+            selectedFareType={selectedFareType}
             selectedSeat={selectedSeat}
             selectedMeal={selectedMeal}
             excessBaggage={excessBaggage}
@@ -149,9 +171,12 @@ export default function App() {
         )}
       </main>
 
+      {/* Persistent Floating Help & Support FAB Widget (per FIX 4) */}
+      <HelpSupportWidget theme={theme} />
+
       {/* Quick Screen Switcher Toolbar for Visual Inspection & Testing */}
-      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 bg-slate-900/90 backdrop-blur-md text-white px-3 py-1.5 rounded-full shadow-2xl border border-slate-700/80 flex items-center gap-1.5 text-xs font-semibold">
-        <span className="flex items-center gap-1 text-slate-400 pl-1 pr-1.5 border-r border-slate-700 text-[11px]">
+      <div className="fixed bottom-4 left-4 sm:left-1/2 sm:-translate-x-1/2 z-40 bg-slate-900/90 dark:bg-black/90 backdrop-blur-md text-white px-2.5 sm:px-3 py-1.5 rounded-full shadow-2xl border border-slate-700/80 dark:border-white/10 flex items-center gap-1 sm:gap-1.5 text-xs font-semibold max-w-[calc(100vw-88px)] overflow-x-auto scrollbar-none">
+        <span className="hidden xs:flex items-center gap-1 text-slate-400 pl-1 pr-1.5 border-r border-slate-700 text-[11px] shrink-0">
           <Layers className="w-3.5 h-3.5 text-[#F7941D]" /> Jump:
         </span>
         {[
@@ -165,9 +190,9 @@ export default function App() {
           <button
             key={screen.id}
             onClick={() => setCurrentScreen(screen.id)}
-            className={`px-2.5 py-1 rounded-full text-[11px] transition-all ${
+            className={`px-2 sm:px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] whitespace-nowrap transition-all shrink-0 ${
               currentScreen === screen.id
-                ? 'bg-[#C30B12] text-white shadow-xs font-bold'
+                ? 'bg-[#C30B12] dark:bg-[#FF3B46] text-white shadow-xs font-bold'
                 : 'text-slate-300 hover:text-white hover:bg-slate-800'
             }`}
           >

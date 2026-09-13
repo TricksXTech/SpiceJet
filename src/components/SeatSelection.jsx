@@ -1,14 +1,10 @@
 import React, { useState } from 'react';
 import { 
   Plane, 
-  Sparkles, 
   Utensils, 
   Luggage, 
-  Check, 
   ArrowRight, 
-  ArrowLeft,
-  Info,
-  ShieldCheck
+  ArrowLeft 
 } from 'lucide-react';
 import { SEAT_MAP_ROWS, MEAL_OPTIONS } from '../data/spicejetRealData';
 
@@ -22,7 +18,7 @@ export default function SeatSelection({
   onBack, 
   onProceed 
 }) {
-  const [activeTab, setActiveTab] = useState('seats'); // 'seats' | 'meals' | 'baggage'
+  const [activeTab, setActiveTab] = useState('seats');
 
   const handleSeatClick = (seatCode, price, type) => {
     if (selectedSeat?.code === seatCode) {
@@ -43,13 +39,13 @@ export default function SeatSelection({
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
       
       {/* Category Tabs: Seats, Meals, Baggage */}
-      <div className="flex items-center gap-2 mb-6 border-b border-slate-200 pb-3">
+      <div className="flex items-center gap-2 mb-6 border-b border-slate-200 dark:border-white/10 pb-3">
         <button
           onClick={() => setActiveTab('seats')}
           className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all ${
             activeTab === 'seats'
-              ? 'bg-[#C30B12] text-white shadow-brand-glow'
-              : 'bg-white text-slate-700 hover:bg-slate-50 border border-slate-200'
+              ? 'bg-[#C30B12] dark:bg-[#FF3B46] text-white shadow-brand-glow'
+              : 'bg-white dark:bg-[#1C1D24] text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5 border border-slate-200 dark:border-white/10'
           }`}
         >
           <Plane className="w-4 h-4" />
@@ -60,8 +56,8 @@ export default function SeatSelection({
           onClick={() => setActiveTab('meals')}
           className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all ${
             activeTab === 'meals'
-              ? 'bg-[#C30B12] text-white shadow-brand-glow'
-              : 'bg-white text-slate-700 hover:bg-slate-50 border border-slate-200'
+              ? 'bg-[#C30B12] dark:bg-[#FF3B46] text-white shadow-brand-glow'
+              : 'bg-white dark:bg-[#1C1D24] text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5 border border-slate-200 dark:border-white/10'
           }`}
         >
           <Utensils className="w-4 h-4" />
@@ -72,8 +68,8 @@ export default function SeatSelection({
           onClick={() => setActiveTab('baggage')}
           className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all ${
             activeTab === 'baggage'
-              ? 'bg-[#C30B12] text-white shadow-brand-glow'
-              : 'bg-white text-slate-700 hover:bg-slate-50 border border-slate-200'
+              ? 'bg-[#C30B12] dark:bg-[#FF3B46] text-white shadow-brand-glow'
+              : 'bg-white dark:bg-[#1C1D24] text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5 border border-slate-200 dark:border-white/10'
           }`}
         >
           <Luggage className="w-4 h-4" />
@@ -87,39 +83,39 @@ export default function SeatSelection({
         <div className="lg:col-span-8">
           
           {activeTab === 'seats' && (
-            <div className="bg-white rounded-2xl p-6 shadow-resting border border-slate-200/90 space-y-6">
-              <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-4">
+            <div className="bg-white dark:bg-[#1C1D24] rounded-2xl p-6 shadow-resting border border-slate-200/90 dark:border-white/10 space-y-6 transition-colors">
+              <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 dark:border-white/10 pb-4">
                 <div>
-                  <h3 className="font-bold text-base text-slate-900">Aircraft Cabin Seat Map</h3>
-                  <p className="text-xs text-slate-500">Boeing 737-800 • 3x3 Seating Configuration</p>
+                  <h3 className="font-bold text-base text-slate-900 dark:text-white">Aircraft Cabin Seat Map</h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">Boeing 737-800 • 3x3 Seating Configuration</p>
                 </div>
 
                 {/* Seat Legend */}
                 <div className="flex items-center gap-3 text-xs flex-wrap">
                   <div className="flex items-center gap-1.5">
-                    <span className="w-3.5 h-3.5 rounded bg-amber-100 border border-[#F7941D]" />
-                    <span className="text-slate-600">SpiceMax (₹1,200)</span>
+                    <span className="w-3.5 h-3.5 rounded bg-amber-100 dark:bg-amber-950 border border-[#F7941D]" />
+                    <span className="text-slate-600 dark:text-slate-400">SpiceMax (₹1,200)</span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <span className="w-3.5 h-3.5 rounded bg-blue-50 border border-blue-300" />
-                    <span className="text-slate-600">Preferred (₹450)</span>
+                    <span className="w-3.5 h-3.5 rounded bg-blue-50 dark:bg-blue-950 border border-blue-300 dark:border-blue-500" />
+                    <span className="text-slate-600 dark:text-slate-400">Preferred (₹450)</span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <span className="w-3.5 h-3.5 rounded bg-slate-100 border border-slate-300" />
-                    <span className="text-slate-600">Standard (₹250)</span>
+                    <span className="w-3.5 h-3.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-600" />
+                    <span className="text-slate-600 dark:text-slate-400">Standard (₹250)</span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <span className="w-3.5 h-3.5 rounded bg-slate-300 border border-slate-400" />
+                    <span className="w-3.5 h-3.5 rounded bg-slate-300 dark:bg-slate-700 border border-slate-400 dark:border-slate-600" />
                     <span className="text-slate-400">Occupied</span>
                   </div>
                 </div>
               </div>
 
               {/* Cabin Shell */}
-              <div className="max-w-md mx-auto bg-slate-50 border-2 border-slate-200 rounded-3xl p-4 sm:p-6 relative">
+              <div className="max-w-md mx-auto bg-slate-50 dark:bg-black/20 border-2 border-slate-200 dark:border-white/10 rounded-3xl p-4 sm:p-6 relative">
                 
                 {/* Airplane Nose / Cockpit indicator */}
-                <div className="text-center pb-4 mb-4 border-b border-slate-200">
+                <div className="text-center pb-4 mb-4 border-b border-slate-200 dark:border-white/10">
                   <span className="text-[11px] font-bold tracking-widest text-slate-400 uppercase">
                     ▲ FRONT OF AIRCRAFT / COCKPIT
                   </span>
@@ -130,7 +126,7 @@ export default function SeatSelection({
                   <div>A</div>
                   <div>B</div>
                   <div>C</div>
-                  <div className="text-[10px] text-slate-300 flex items-center justify-center">AISLE</div>
+                  <div className="text-[10px] text-slate-400 flex items-center justify-center">AISLE</div>
                   <div>D</div>
                   <div>E</div>
                   <div>F</div>
@@ -151,12 +147,12 @@ export default function SeatSelection({
                           const isOccupied = occupiedSeats.includes(seatCode);
                           const isSelected = selectedSeat?.code === seatCode;
 
-                          let seatColor = 'bg-white border-slate-300 hover:border-slate-500 text-slate-700';
-                          if (isSpiceMax) seatColor = 'bg-amber-50 border-[#F7941D] hover:bg-amber-100 text-amber-900';
-                          if (isPreferred) seatColor = 'bg-blue-50 border-blue-300 hover:bg-blue-100 text-blue-900';
-                          if (isExit) seatColor = 'bg-emerald-50 border-emerald-400 hover:bg-emerald-100 text-emerald-900';
-                          if (isOccupied) seatColor = 'bg-slate-200 border-slate-300 text-slate-400 cursor-not-allowed';
-                          if (isSelected) seatColor = 'bg-[#C30B12] border-[#C30B12] text-white font-bold shadow-sm';
+                          let seatColor = 'bg-white dark:bg-[#1C1D24] border-slate-300 dark:border-white/15 text-slate-700 dark:text-slate-300';
+                          if (isSpiceMax) seatColor = 'bg-amber-50 dark:bg-amber-950/40 border-[#F7941D] text-amber-900 dark:text-amber-300';
+                          if (isPreferred) seatColor = 'bg-blue-50 dark:bg-blue-950/40 border-blue-300 dark:border-blue-500 text-blue-900 dark:text-blue-300';
+                          if (isExit) seatColor = 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-400 dark:border-emerald-500 text-emerald-900 dark:text-emerald-300';
+                          if (isOccupied) seatColor = 'bg-slate-200 dark:bg-white/5 border-slate-300 dark:border-white/5 text-slate-400 cursor-not-allowed';
+                          if (isSelected) seatColor = 'bg-[#C30B12] dark:bg-[#FF3B46] border-[#C30B12] dark:border-[#FF3B46] text-white font-bold shadow-sm';
 
                           return (
                             <button
@@ -181,12 +177,12 @@ export default function SeatSelection({
                           const isOccupied = occupiedSeats.includes(seatCode);
                           const isSelected = selectedSeat?.code === seatCode;
 
-                          let seatColor = 'bg-white border-slate-300 hover:border-slate-500 text-slate-700';
-                          if (isSpiceMax) seatColor = 'bg-amber-50 border-[#F7941D] hover:bg-amber-100 text-amber-900';
-                          if (isPreferred) seatColor = 'bg-blue-50 border-blue-300 hover:bg-blue-100 text-blue-900';
-                          if (isExit) seatColor = 'bg-emerald-50 border-emerald-400 hover:bg-emerald-100 text-emerald-900';
-                          if (isOccupied) seatColor = 'bg-slate-200 border-slate-300 text-slate-400 cursor-not-allowed';
-                          if (isSelected) seatColor = 'bg-[#C30B12] border-[#C30B12] text-white font-bold shadow-sm';
+                          let seatColor = 'bg-white dark:bg-[#1C1D24] border-slate-300 dark:border-white/15 text-slate-700 dark:text-slate-300';
+                          if (isSpiceMax) seatColor = 'bg-amber-50 dark:bg-amber-950/40 border-[#F7941D] text-amber-900 dark:text-amber-300';
+                          if (isPreferred) seatColor = 'bg-blue-50 dark:bg-blue-950/40 border-blue-300 dark:border-blue-500 text-blue-900 dark:text-blue-300';
+                          if (isExit) seatColor = 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-400 dark:border-emerald-500 text-emerald-900 dark:text-emerald-300';
+                          if (isOccupied) seatColor = 'bg-slate-200 dark:bg-white/5 border-slate-300 dark:border-white/5 text-slate-400 cursor-not-allowed';
+                          if (isSelected) seatColor = 'bg-[#C30B12] dark:bg-[#FF3B46] border-[#C30B12] dark:border-[#FF3B46] text-white font-bold shadow-sm';
 
                           return (
                             <button
@@ -205,7 +201,7 @@ export default function SeatSelection({
                   })}
                 </div>
 
-                <div className="text-center pt-4 mt-4 border-t border-slate-200 text-[11px] text-slate-400">
+                <div className="text-center pt-4 mt-4 border-t border-slate-200 dark:border-white/10 text-[11px] text-slate-400">
                   ▼ REAR OF AIRCRAFT & GALLEY
                 </div>
               </div>
@@ -213,10 +209,10 @@ export default function SeatSelection({
           )}
 
           {activeTab === 'meals' && (
-            <div className="bg-white rounded-2xl p-6 shadow-resting border border-slate-200/90 space-y-4">
-              <div className="border-b border-slate-100 pb-3">
-                <h3 className="font-bold text-base text-slate-900">SpiceCafé Gourmet Pre-book Meals</h3>
-                <p className="text-xs text-slate-500">Freshly prepared inflight meal served hot at 30,000 feet</p>
+            <div className="bg-white dark:bg-[#1C1D24] rounded-2xl p-6 shadow-resting border border-slate-200/90 dark:border-white/10 space-y-4 transition-colors">
+              <div className="border-b border-slate-100 dark:border-white/10 pb-3">
+                <h3 className="font-bold text-base text-slate-900 dark:text-white">SpiceCafé Gourmet Pre-book Meals</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Freshly prepared inflight meal served hot at 30,000 feet</p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -228,8 +224,8 @@ export default function SeatSelection({
                       onClick={() => setSelectedMeal(isSelected ? null : meal)}
                       className={`p-4 rounded-xl border cursor-pointer transition-all ${
                         isSelected
-                          ? 'bg-amber-50/70 border-[#F7941D] shadow-sm ring-1 ring-[#F7941D]'
-                          : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                          ? 'bg-amber-50/70 dark:bg-amber-950/30 border-[#F7941D] shadow-sm ring-1 ring-[#F7941D]'
+                          : 'border-slate-200 dark:border-white/10 hover:border-slate-300 hover:bg-slate-50 dark:hover:bg-white/5'
                       }`}
                     >
                       <div className="flex items-start justify-between gap-2 mb-2">
@@ -238,9 +234,9 @@ export default function SeatSelection({
                         }`}>
                           <span className={`w-2 h-2 rounded-full ${meal.type === 'veg' ? 'bg-emerald-600' : 'bg-red-600'}`} />
                         </span>
-                        <span className="font-mono font-bold text-sm text-slate-900">₹ {meal.price}</span>
+                        <span className="font-mono font-bold text-sm text-slate-900 dark:text-white">₹ {meal.price}</span>
                       </div>
-                      <div className="font-bold text-xs text-slate-900">{meal.name}</div>
+                      <div className="font-bold text-xs text-slate-900 dark:text-white">{meal.name}</div>
                       <div className="text-[11px] text-slate-400 mt-1">{meal.calories}</div>
                     </div>
                   );
@@ -250,10 +246,10 @@ export default function SeatSelection({
           )}
 
           {activeTab === 'baggage' && (
-            <div className="bg-white rounded-2xl p-6 shadow-resting border border-slate-200/90 space-y-4">
-              <div className="border-b border-slate-100 pb-3">
-                <h3 className="font-bold text-base text-slate-900">Excess Baggage Allowance</h3>
-                <p className="text-xs text-slate-500">Pre-book extra baggage up to 6 hours before departure and save up to 40%</p>
+            <div className="bg-white dark:bg-[#1C1D24] rounded-2xl p-6 shadow-resting border border-slate-200/90 dark:border-white/10 space-y-4 transition-colors">
+              <div className="border-b border-slate-100 dark:border-white/10 pb-3">
+                <h3 className="font-bold text-base text-slate-900 dark:text-white">Excess Baggage Allowance</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Pre-book extra baggage up to 6 hours before departure and save up to 40%</p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -269,14 +265,14 @@ export default function SeatSelection({
                       onClick={() => setExcessBaggage(isSelected ? null : item)}
                       className={`p-4 rounded-xl border cursor-pointer transition-all text-center ${
                         isSelected
-                          ? 'bg-red-50/70 border-[#C30B12] shadow-sm ring-1 ring-[#C30B12]'
-                          : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                          ? 'bg-red-50/70 dark:bg-red-500/20 border-[#C30B12] dark:border-[#FF3B46] shadow-sm ring-1 ring-[#C30B12]'
+                          : 'border-slate-200 dark:border-white/10 hover:border-slate-300 hover:bg-slate-50 dark:hover:bg-white/5'
                       }`}
                     >
-                      <Luggage className="w-6 h-6 mx-auto mb-2 text-slate-600" />
-                      <div className="font-bold text-sm text-slate-900">{item.weight}</div>
-                      <div className="font-mono font-bold text-sm text-[#C30B12] mt-1">₹ {item.price.toLocaleString('en-IN')}</div>
-                      <div className="text-[10px] text-emerald-600 font-medium mt-1">Save ₹600 vs Airport</div>
+                      <Luggage className="w-6 h-6 mx-auto mb-2 text-slate-600 dark:text-slate-300" />
+                      <div className="font-bold text-sm text-slate-900 dark:text-white">{item.weight}</div>
+                      <div className="font-mono font-bold text-sm text-[#C30B12] dark:text-[#FF3B46] mt-1">₹ {item.price.toLocaleString('en-IN')}</div>
+                      <div className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium mt-1">Save ₹600 vs Airport</div>
                     </div>
                   );
                 })}
@@ -289,7 +285,7 @@ export default function SeatSelection({
             <button
               id="seats-back-btn"
               onClick={onBack}
-              className="h-11 px-5 rounded-xl border border-slate-200 hover:border-slate-300 bg-white text-xs font-semibold text-slate-700 flex items-center gap-2 transition-all"
+              className="h-11 px-5 rounded-xl border border-slate-200 dark:border-white/10 hover:border-slate-300 bg-white dark:bg-white/5 text-xs font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2 transition-all shadow-resting"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Back to Passengers</span>
@@ -309,47 +305,47 @@ export default function SeatSelection({
 
         {/* Right Column: Selected Add-ons Summary */}
         <div className="lg:col-span-4">
-          <div className="bg-white rounded-2xl p-5 shadow-elevated border border-slate-200/90 space-y-4 sticky top-24">
-            <div className="border-b border-slate-100 pb-3">
-              <h3 className="font-bold text-sm text-slate-900">Selected Add-ons</h3>
-              <p className="text-xs text-slate-500">Customized flight preferences</p>
+          <div className="bg-white dark:bg-[#1C1D24] rounded-2xl p-5 shadow-elevated border border-slate-200/90 dark:border-white/10 space-y-4 sticky top-24 transition-colors">
+            <div className="border-b border-slate-100 dark:border-white/10 pb-3">
+              <h3 className="font-bold text-sm text-slate-900 dark:text-white">Selected Add-ons</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Customized flight preferences</p>
             </div>
 
             <div className="space-y-3 text-xs">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="font-semibold text-slate-800">Assigned Seat</div>
-                  <div className="text-slate-500">{selectedSeat ? `${selectedSeat.code} (${selectedSeat.type})` : 'None selected'}</div>
+                  <div className="font-semibold text-slate-800 dark:text-slate-200">Assigned Seat</div>
+                  <div className="text-slate-500 dark:text-slate-400">{selectedSeat ? `${selectedSeat.code} (${selectedSeat.type})` : 'None selected'}</div>
                 </div>
-                <div className="font-mono font-bold text-slate-900">
+                <div className="font-mono font-bold text-slate-900 dark:text-white">
                   {selectedSeat ? `₹ ${selectedSeat.price}` : 'Free'}
                 </div>
               </div>
 
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="font-semibold text-slate-800">SpiceCafé Meal</div>
-                  <div className="text-slate-500">{selectedMeal ? selectedMeal.name : 'None selected'}</div>
+                  <div className="font-semibold text-slate-800 dark:text-slate-200">SpiceCafé Meal</div>
+                  <div className="text-slate-500 dark:text-slate-400">{selectedMeal ? selectedMeal.name : 'None selected'}</div>
                 </div>
-                <div className="font-mono font-bold text-slate-900">
+                <div className="font-mono font-bold text-slate-900 dark:text-white">
                   {selectedMeal ? `₹ ${selectedMeal.price}` : '₹ 0'}
                 </div>
               </div>
 
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="font-semibold text-slate-800">Pre-booked Baggage</div>
-                  <div className="text-slate-500">{excessBaggage ? excessBaggage.weight : 'Standard 15kg'}</div>
+                  <div className="font-semibold text-slate-800 dark:text-slate-200">Pre-booked Baggage</div>
+                  <div className="text-slate-500 dark:text-slate-400">{excessBaggage ? excessBaggage.weight : 'Standard 15kg'}</div>
                 </div>
-                <div className="font-mono font-bold text-slate-900">
+                <div className="font-mono font-bold text-slate-900 dark:text-white">
                   {excessBaggage ? `₹ ${excessBaggage.price}` : '₹ 0'}
                 </div>
               </div>
             </div>
 
-            <div className="border-t border-slate-100 pt-3 flex items-center justify-between">
-              <span className="text-xs text-slate-500">Add-ons Subtotal:</span>
-              <span className="font-mono font-bold text-base text-slate-900">₹ {addOnsTotal.toLocaleString('en-IN')}</span>
+            <div className="border-t border-slate-100 dark:border-white/10 pt-3 flex items-center justify-between">
+              <span className="text-xs text-slate-500 dark:text-slate-400">Add-ons Subtotal:</span>
+              <span className="font-mono font-bold text-base text-slate-900 dark:text-white">₹ {addOnsTotal.toLocaleString('en-IN')}</span>
             </div>
           </div>
         </div>

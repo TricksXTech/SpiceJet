@@ -6,17 +6,27 @@
 
 ## 🌟 Highlights & Features
 
-- **Strict Header Geometry**: 
+- **Strict Header Geometry & Responsive Overflow Prevention**: 
   - Every interactive nav item, dropdown, and CTA shares the **exact same vertical baseline (`top: 16px`)** and **uniform `40px` height**.
-  - Active routes render with a soft brand tint pill (`rgba(195,11,18,0.08)`).
-  - Currency selector (`INR | ₹`) and SpiceClub loyalty dropdown include interactive chevron carets.
-  - Primary CTA (*Login / Sign Up*) visually outranks siblings through contrast and weight without breaking height parity.
+  - Proportional breakpoint spacing: on `< 1280px`, secondary items (*Deals*, *Help*) collapse into a **"More"** overflow menu.
+  - On `< 1024px`, the full navigation cleanly collapses into a responsive hamburger drawer.
+  - The primary CTA (*Login / Sign Up*) **never collapses or clips** and remains fully visible across all screen sizes (1440px, 1280px, 1024px, 768px, 375px).
 
-- **Verified Brand Identity (Zero Approximations)**:
-  - **Primary Brand Red**: `#C30B12` (RGB: `195, 11, 18`)
-  - **Secondary CTA Amber**: `#F7941D` (RGB: `247, 148, 29`)
-  - **Typography**: `Poppins, sans-serif` paired with tabular-figure monospace numerals (`JetBrains Mono` / `ui-monospace`) for flight times, flight numbers, and prices.
-  - **Brand Assets**: Official logo and live promotional campaign assets.
+- **Theme Toggle (Full Light & Dark Mode Support)**:
+  - Custom CSS properties with smooth transitions: Light mode background (`#F8FAFC`) and Dark mode neutral charcoal (`#14151A`).
+  - Dark mode brand red adjusted to `#FF3B46` to achieve strict **WCAG AA (4.5:1+)** contrast against dark surfaces.
+  - Dark-adapted shadows, borders, and tinted badges across every screen.
+
+- **Complete Real Station Dataset (79 Airports)**:
+  - Extracted directly from SpiceJet's official live API (`/api/v1/search/getStationDetails`).
+  - Real-time text search filtering in both Origin and Destination dropdowns (e.g. typing "Goa" shows both `GOI` Dabolim and `GOX` Mopa; "Dub" shows `DXB` and `DWC`).
+  - Full dynamic route propagation: changing origin and destination dynamically recalculates flights, durations, terminals, and tariffs across all 6 screens.
+
+- **Persistent Floating Help & Support FAB Widget**:
+  - Fixed-position bottom-right floating action button (56px desktop / 48px mobile) accessible on every screen with zero layout overlap.
+  - Animated slide-over drawer with 4 scannable tabs: **How to Book** mini-guide, interactive **FAQs accordion** (baggage, date change, check-in, refunds), **Live Chat stub** with instant replies, and **Official 24x7 Contact Details**.
+  - Full keyboard accessibility: Tab focus trap, Escape key dismiss with focus return, and ARIA attributes.
+
 
 - **Full 6-Screen Interactive Flight Booking Funnel**:
   1. **Homepage (`/`)**: Dynamic hero, real-time flight search widget (Indian airport selectors `DEL`, `BOM`, `BLR`, `CCU`, etc., date pickers, passenger counter, special fare categories), quick access services, and promotional deal cards.

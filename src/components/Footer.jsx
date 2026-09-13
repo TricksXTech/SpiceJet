@@ -2,20 +2,16 @@ import React from 'react';
 import { 
   Phone, 
   Mail, 
-  MapPin, 
-  ShieldCheck, 
-  Heart, 
-  Smartphone,
-  ExternalLink
+  Smartphone
 } from 'lucide-react';
 import { FOOTER_SECTIONS, BRAND_ASSETS } from '../data/spicejetRealData';
 
 export default function Footer() {
   return (
-    <footer className="bg-slate-900 text-slate-400 text-xs border-t border-slate-800">
+    <footer className="bg-slate-950 text-slate-400 text-xs border-t border-slate-800 transition-colors">
       
       {/* 24x7 Support & App Download Bar */}
-      <div className="border-b border-slate-800/80 bg-slate-950/60 py-6">
+      <div className="border-b border-slate-800/80 bg-black/40 py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-4 flex-wrap justify-center sm:justify-start">
             <div className="flex items-center gap-2 text-white font-medium">
